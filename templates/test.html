@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="test-container" style="max-width: 800px; margin: 0 auto;">
+    <div class="glass-card" style="padding: 40px; margin-top: 40px;">
+        <div class="form-header" style="text-align: center; margin-bottom: 40px;">
+            <h1 style="color: var(--primary-dark); margin-bottom: 10px;">PCOS Screening Test</h1>
+            <p style="color: var(--text-muted);">Please answer the following questions accurately for the best prediction results.</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" style="background: #eee; height: 8px; border-radius: 4px; margin-bottom: 50px; overflow: hidden;">
+            <div id="progressBar" style="background: var(--primary); width: 33%; height: 100%; transition: width 0.4s ease;"></div>
+        </div>
+
+        <form id="pcosForm" action="/predict" method="post">
+            <!-- Step 1: Basic Information -->
+            <div class="form-step" id="step1">
+                <h3 style="margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
+                    <i data-lucide="user"></i> 1. Basic Information
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label for="Age">Age (years):</label>
+                        <input type="number" id="Age" name="Age" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Blood_Group">Blood Group:</label>
+                        <select id="Blood_Group" name="Blood_Group" class="form-input" required>
+                            <option value="11">A+</option>
+                            <option value="12">A-</option>
+                            <option value="13">B+</option>
+                            <option value="14">B-</option>
+                            <option value="15">AB+</option>
+                            <option value="16">O-</option>
+                            <option value="17">O+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Weight">Weight (Kg):</label>
+                        <input type="number" id="Weight" name="Weight" step="0.1" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Height">Height (Cm):</label>
+                        <input type="number" id="Height" name="Height" step="0.1" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="BMI">Calculated BMI:</label>
+                        <input type="number" id="BMI" name="BMI" step="0.1" class="form-input" readonly style="background: #f8f9fa; border-color: #dee2e6;">
+                        <small id="bmiInfo" style="color: var(--primary);">BMI is auto-calculated based on height and weight.</small>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; display: flex; justify-content: flex-end;">
+                    <button type="button" class="btn-primary" onclick="nextStep(2)">Next Step <i data-lucide="arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 2: Cycle & Clinical Signs -->
+            <div class="form-step" id="step2" style="display: none;">
+                <h3 style="margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
+                    <i data-lucide="calendar"></i> 2. Cycle & Clinical Signs
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label for="Cycle">Cycle Type:</label>
+                        <select id="Cycle" name="Cycle" class="form-input" required>
+                            <option value="R">Regular (R)</option>
+                            <option value="I">Irregular (I)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Cycle_length">Cycle Length (days):</label>
+                        <input type="number" id="Cycle_length" name="Cycle_length" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Marriage_Status">Years of Marriage:</label>
+                        <input type="number" id="Marriage_Status" name="Marriage_Status" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="No_of_abortions">No. of Abortions:</label>
+                        <input type="number" id="No_of_abortions" name="No_of_abortions" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Pregnant">Is Pregnant?</label>
+                        <select id="Pregnant" name="Pregnant" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Skin_darkening">Skin Darkening?</label>
+                        <select id="Skin_darkening" name="Skin_darkening" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+                    <button type="button" class="btn-primary" style="background: #a29bfe;" onclick="nextStep(1)"><i data-lucide="arrow-left"></i> Previous</button>
+                    <button type="button" class="btn-primary" onclick="nextStep(3)">Next Step <i data-lucide="arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 3: Physical & Lifestyle -->
+            <div class="form-step" id="step3" style="display: none;">
+                <h3 style="margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
+                    <i data-lucide="activity"></i> 3. Physical & Lifestyle
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label for="Weight_gain">Recent Weight Gain?</label>
+                        <select id="Weight_gain" name="Weight_gain" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Hair_growth">Excessive Hair Growth?</label>
+                        <select id="Hair_growth" name="Hair_growth" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Hair_loss">Significant Hair Loss?</label>
+                        <select id="Hair_loss" name="Hair_loss" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Pimples">Acne/Pimples?</label>
+                        <select id="Pimples" name="Pimples" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Fast_food">Regular Fast Food?</label>
+                        <select id="Fast_food" name="Fast_food" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Reg_Exercise">Regular Exercise?</label>
+                        <select id="Reg_Exercise" name="Reg_Exercise" class="form-input" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+                    <button type="button" class="btn-primary" style="background: #a29bfe;" onclick="nextStep(2)"><i data-lucide="arrow-left"></i> Previous</button>
+                    <button type="submit" class="btn-primary" style="background: #00b894;">Analyze Results <i data-lucide="check-circle"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--text-main);
+        font-size: 0.9rem;
+    }
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    .form-input:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(226, 100, 140, 0.1);
+    }
+</style>
+
+<script>
+    function nextStep(step) {
+        // Validation check for current step
+        const currentStep = document.querySelector('.form-step:not([style*="display: none"])');
+        const inputs = currentStep.querySelectorAll('input[required], select[required]');
+        let valid = true;
+        
+        // Simplified validation (only check if fields have values)
+        if (step > parseInt(currentStep.id.replace('step', ''))) {
+            inputs.forEach(input => {
+                if (!input.value) {
+                    input.style.borderColor = 'red';
+                    valid = false;
+                } else {
+                    input.style.borderColor = '#dee2e6';
+                }
+            });
+        }
+
+        if (valid) {
+            document.querySelectorAll('.form-step').forEach(s => s.style.display = 'none');
+            document.getElementById('step' + step).style.display = 'block';
+            
+            // Update progress bar
+            const prog = (step / 3) * 100;
+            document.getElementById('progressBar').style.width = prog + '%';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // Real-time BMI Calculation
+    const weightInp = document.getElementById('Weight');
+    const heightInp = document.getElementById('Height');
+    const bmiInp = document.getElementById('BMI');
+
+    function calculateBMI() {
+        const weight = parseFloat(weightInp.value);
+        const height = parseFloat(heightInp.value) / 100; // cm to m
+        
+        if (weight > 0 && height > 0) {
+            const bmi = weight / (height * height);
+            bmiInp.value = bmi.toFixed(1);
+        }
+    }
+
+    if (weightInp && heightInp) {
+        weightInp.addEventListener('input', calculateBMI);
+        heightInp.addEventListener('input', calculateBMI);
+    }
+</script>
+{% endblock %}
+

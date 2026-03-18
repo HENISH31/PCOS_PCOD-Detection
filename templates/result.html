@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Print-Only Header -->
+<div class="print-only-header" style="display: none; border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <i data-lucide="activity" style="width: 40px; height: 40px; color: var(--primary);"></i>
+        <div>
+            <h1 style="margin: 0; font-size: 1.8rem; color: var(--primary-dark);">Polysense Screening Report</h1>
+            <p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">Automated PCOS Detection System</p>
+        </div>
+    </div>
+    <div style="text-align: right;">
+        <p style="margin: 0; font-weight: 600;">Date: {{ result.date if result.date else 'March 18, 2026' }}</p>
+        <p style="margin: 5px 0 0; font-size: 0.8rem; color: var(--text-muted);">Report ID: PS-{{ range(1000, 9999) | random }}</p>
+    </div>
+</div>
+
+<div class="result-container" style="max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; padding-top: 20px;">
+    <!-- Left Column: Primary Result -->
+    <div class="glass-card" style="padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div id="statusIcon" class="{{ 'bg-positive' if result.prediction == 'PCOS' else 'bg-negative' }}" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <i data-lucide="{{ 'alert-circle' if result.prediction == 'PCOS' else 'check-circle' }}" 
+               style="width: 48px; height: 48px; color: white;"></i>
+        </div>
+        
+        <h2 style="font-size: 1.2rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Prediction Result</h2>
+        <h1 id="predictionText" class="{{ 'status-positive' if result.prediction == 'PCOS' else 'status-negative' }}" style="font-size: 3.5rem; margin: 10px 0;">
+            {{ result.prediction }}
+        </h1>
+        
+        <p style="font-size: 1.1rem; color: var(--text-main); line-height: 1.6; margin-top: 20px;">
+            Based on the clinical signs and lifestyle data provided, our ML model predicts a 
+            <strong>{{ result.probability_PCOS }}</strong> probability of PCOS.
+        </p>
+
+        <div class="no-print" style="margin-top: 40px; display: flex; gap: 15px; width: 100%;">
+            <a href="/test" class="btn-primary" style="flex: 1; justify-content: center; background: var(--secondary);">
+                <i data-lucide="refresh-cw"></i> Retest
+            </a>
+            <button class="btn-primary" style="flex: 1; justify-content: center;" onclick="window.print()">
+                <i data-lucide="download"></i> Save Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Right Column: Visualization -->
+    <div class="glass-card" style="padding: 40px;">
+        <h3 style="margin-bottom: 30px; font-size: 1.5rem; color: var(--primary-dark);">Risk Probability</h3>
+        <div style="width: 100%; max-width: 300px; margin: 0 auto;">
+            <canvas id="probabilityChart"></canvas>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <h4 style="margin-bottom: 15px; font-weight: 600;">Health Insights</h4>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="insight-item" style="display: flex; align-items: flex-start; gap: 12px; background: rgba(255,255,255,0.5); padding: 15px; border-radius: 12px;">
+                    <i data-lucide="info" style="color: var(--primary); margin-top: 3px;"></i>
+                    <span style="font-size: 0.9rem;">Maintain a balanced diet with low glycemic index foods.</span>
+                </div>
+                <div class="insight-item" style="display: flex; align-items: flex-start; gap: 12px; background: rgba(255,255,255,0.5); padding: 15px; border-radius: 12px;">
+                    <i data-lucide="heart" style="color: #e84393; margin-top: 3px;"></i>
+                    <span style="font-size: 0.9rem;">Engage in at least 30 minutes of moderate exercise daily.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Input Summary Section -->
+<div class="glass-card" style="max-width: 900px; margin: 30px auto; padding: 40px;">
+    <h3 style="margin-bottom: 30px; font-size: 1.5rem; color: var(--primary-dark); display: flex; align-items: center; gap: 12px;">
+        <i data-lucide="clipboard-list"></i> Patient Input Summary
+    </h3>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+        {% for key, value in user_data.items() %}
+        <div class="input-item" style="background: rgba(255,255,255,0.4); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3);">
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">{{ key }}</div>
+            <div style="font-weight: 600; color: var(--text-main);">{{ value }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Print-Only Disclaimer -->
+<div class="print-only" style="display: none; margin-top: 50px; font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 20px;">
+    <p><strong>Medical Disclaimer:</strong> This report is generated by an automated screening tool using machine learning. It is not a definitive medical diagnosis. Results should be interpreted by a qualified healthcare provider. Polysense is not responsible for any actions taken based on this screening result.</p>
+</div>
+
+<style>
+    .status-positive { color: #d63031 !important; }
+    .status-negative { color: #00b894 !important; }
+    
+    .bg-positive { 
+        background: #d63031 !important; 
+        box-shadow: 0 10px 20px rgba(214, 48, 49, 0.3) !important; 
+    }
+    .bg-negative { 
+        background: #00b894 !important; 
+        box-shadow: 0 10px 20px rgba(0, 184, 148, 0.3) !important; 
+    }
+    
+    @media print {
+        body { background: white !important; }
+        .navbar, .footer, .btn-primary, .no-print { display: none !important; }
+        .print-only-header { display: flex !important; }
+        .print-only { display: block !important; }
+        
+        .result-container { 
+            display: block !important; 
+            padding-top: 0 !important;
+        }
+        
+        .glass-card { 
+            border: 1px solid #eee !important; 
+            box-shadow: none !important; 
+            color: black !important; 
+            background: white !important;
+            margin-bottom: 20px !important;
+            break-inside: avoid;
+        }
+        
+        .input-item {
+            background: #f9f9f9 !important;
+            border: 1px solid #eee !important;
+        }
+
+        #probabilityChart {
+            max-width: 250px !important;
+            margin: 0 auto !important;
+        }
+
+        h1, h2, h3, h4 { color: black !important; }
+        
+        /* Ensure background colors are printed */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('probabilityChart').getContext('2d');
+        const probPCOS = parseFloat("{{ result.probability_PCOS }}".replace('%', ''));
+        const probNoPCOS = parseFloat("{{ result.probability_No_PCOS }}".replace('%', ''));
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['PCOS', 'No PCOS'],
+                datasets: [{
+                    data: [probPCOS, probNoPCOS],
+                    backgroundColor: ['#e2648c', '#a29bfe'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { family: 'Inter', size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+

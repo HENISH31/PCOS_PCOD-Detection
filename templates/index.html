@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero" style="display: flex; align-items: center; justify-content: space-between; min-height: 80vh; gap: 40px; padding: 0 20px;">
+    <div class="hero-text" style="flex: 1;">
+        <h1 style="font-size: 4rem; margin-bottom: 20px; line-height: 1.1; color: var(--primary-dark);">
+            Early Detection,<br>
+            <span style="color: var(--primary);">Empowered</span> Future.
+        </h1>
+        <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 40px; max-width: 600px;">
+            Polysense leverages advanced machine learning to provide clinical-grade PCOS screening from the comfort of your home. Start your journey towards better hormonal health today.
+        </p>
+        <div style="display: flex; gap: 20px;">
+            <a href="/test" class="btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
+                <i data-lucide="sparkles"></i>
+                Start Prediction
+            </a>
+            <a href="#about" class="btn-primary" style="background: white; color: var(--primary); border: 2px solid var(--primary-light);">
+                Learn More
+            </a>
+        </div>
+    </div>
+    
+    <div class="hero-image glass-card" style="flex: 0.8; height: 500px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center;">
+        <img src="/static/images/1sthome.png" alt="Health Analysis" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+        <div style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 12px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;">
+            <i data-lucide="shield-check" style="color: #00b894;"></i>
+            <span style="font-weight: 600;">98% Accuracy</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section style="margin-top: 100px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+    <div class="glass-card" style="padding: 40px; text-align: center;">
+        <div style="background: #fff5f7; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <i data-lucide="brain" style="color: var(--primary);"></i>
+        </div>
+        <h3>AI Driven</h3>
+        <p style="color: var(--text-muted);">Powered by state-of-the-art SVM algorithms trained on clinical datasets.</p>
+    </div>
+    <div class="glass-card" style="padding: 40px; text-align: center;">
+        <div style="background: #f0f4ff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <i data-lucide="user-check" style="color: var(--secondary);"></i>
+        </div>
+        <h3>Privacy First</h3>
+        <p style="color: var(--text-muted);">Your data remains secure. We prioritize your privacy above everything else.</p>
+    </div>
+    <div class="glass-card" style="padding: 40px; text-align: center;">
+        <div style="background: #e8f7ff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <i data-lucide="file-text" style="color: #0984e3;"></i>
+        </div>
+        <h3>Instant Reports</h3>
+        <p style="color: var(--text-muted);">Get comprehensive PDF reports with actionable health insights instantly.</p>
+    </div>
+</section>
+
+<!-- About PCOS Section -->
+<section id="about" class="reveal" style="margin-top: 120px; margin-bottom: 60px;">
+    <div class="glass-card" style="display: flex; overflow: hidden; flex-direction: column;">
+        <div style="display: flex; min-height: 400px;">
+            <div style="flex: 1; padding: 60px;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 30px; color: var(--primary-dark);">Understanding PCOS</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main); margin-bottom: 25px;">
+                    Polycystic Ovary Syndrome (PCOS) is a common hormonal disorder affecting millions of women worldwide. Early detection is crucial for managing symptoms like irregular periods, weight gain, and acne.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <i data-lucide="check" style="color: var(--primary); margin-top: 5px;"></i>
+                        <span>Hormonal Imbalance</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <i data-lucide="check" style="color: var(--primary); margin-top: 5px;"></i>
+                        <span>Irregular Cycles</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <i data-lucide="check" style="color: var(--primary); margin-top: 5px;"></i>
+                        <span>Weight Management</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <i data-lucide="check" style="color: var(--primary); margin-top: 5px;"></i>
+                        <span>Fertility Support</span>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; background: url('/static/images/2nd home.webp') center/cover;"></div>
+        </div>
+
+        <!-- Detailed confusion resolver -->
+        <div style="padding: 60px; border-top: 1px solid var(--glass-border); background: rgba(255,255,255,0.2);">
+            <h3 style="font-size: 2rem; margin-bottom: 40px; text-align: center; color: var(--primary-dark);">Common Confusion & Solutions</h3>
+            
+            <div class="faq-container">
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>PCOD vs. PCOS: What's the main difference?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>PCOD (Polycystic Ovary Disease) is generally considered less severe. It's a condition where ovaries produce immature eggs which eventually turn into cysts. PCOS (Polycystic Ovary Syndrome) is a metabolic disorder that affects the endocrine system, having more profound effects on fertility and overall health.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>How accurate is the Polysense AI screening?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Polysense uses a Support Vector Machine (SVM) model trained on clinical datasets with 17 key health parameters. While it achieves high accuracy in screening, it is intended to be a decision-support tool, not a replacement for professional medical diagnosis.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>I have irregular periods, does it mean I have PCOS?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Not necessarily. Irregular periods can be caused by stress, weight changes, or thyroid issues. Our screening test evaluates irregular periods along with other signs like skin darkening, hair growth, and BMI to provide a more holistic assessment.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>What should I do if my result shows a "PCOS" risk?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Don't panic! The first step is to consult a gynecologist or endocrinologist for a clinical check-up and blood tests. Our report serves as a starting point to help your doctor understand your symptoms better.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Reveal on scroll logic
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+        revealElements.forEach(el => {
+            const windowHeight = window.innerHeight;
+            const revealTop = el.getBoundingClientRect().top;
+            const revealPoint = 150;
+            if (revealTop < windowHeight - revealPoint) {
+                el.classList.add('active');
+            }
+        });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // Initial check
+
+    // Accordion logic
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const item = header.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+            
+            // Toggle current item
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
